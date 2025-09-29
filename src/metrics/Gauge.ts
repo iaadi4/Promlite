@@ -11,57 +11,86 @@ export class Gauge {
         this.values = new Map();
     }
 
-    // value can be any finite number (negative, positive or zero)
-    inc(labels: string[] = [], value: number = 1) {
-        if(typeof labels == 'number') {
-            value = labels;
-            labels = [];
+    // Overload signatures
+    inc(value?: number): void;
+    inc(labels: string[], value?: number): void;
+
+    // Implementation
+    inc(arg1?: number | string[], arg2?: number): void {
+        let labels: string[] = [];
+        let value: number;
+
+        if (typeof arg1 === 'number' || arg1 === undefined) {
+            value = arg1 ?? 1; // default to 1
+        } else {
+            labels = arg1;
+            value = arg2 ?? 1; // default to 1
         }
 
-        if(value == undefined) {
-            value = 1;
+        if(labels.length !== this.labels.length) {
+            throw new Error(`Label count mismatch, expected ${this.labels.length} but got ${labels.length}`);
         }
 
-        if(typeof value != 'number') {
-            throw new TypeError(`Value is not a valid number, expected 'number' found ${typeof value}`);
-        }
-
-        if(isNaN(value)) {
-            throw new TypeError(`Value is NaN`);
-        }
-
-        if(!Number.isFinite(value)) {
-            throw new TypeError(`Value is not a finite number: ${value}`);
+        if (typeof value !== 'number' || isNaN(value) || !Number.isFinite(value)) {
+            throw new TypeError(`Value is not a valid finite number: ${value}`);
         }
 
         const key = JSON.stringify(labels);
         this.values.set(key, (this.values.get(key) || 0) + value);
     }
 
-    dec(labels: string[] = [], value: number = 1) {
-        if(typeof labels == 'number') {
-            value = labels;
-            labels = [];
+    // Overload signatures
+    dec(value?: number): void;
+    dec(labels: string[], value?: number): void;
+
+    // Implementation
+    dec(arg1?: number | string[], arg2?: number): void {
+        let labels: string[] = [];
+        let value: number;
+
+        if (typeof arg1 === 'number' || arg1 === undefined) {
+            value = arg1 ?? 1; // default to 1
+        } else {
+            labels = arg1;
+            value = arg2 ?? 1; // default to 1
         }
 
-        if(value == undefined) {
-            value = 1;
+        if(labels.length !== this.labels.length) {
+            throw new Error(`Label count mismatch, expected ${this.labels.length} but got ${labels.length}`);
         }
 
-        if(typeof value != 'number') {
-            throw new TypeError(`Value is not a valid number, expected 'number' found ${typeof value}`);
-        }
-
-        if(isNaN(value)) {
-            throw new TypeError(`Value is NaN`);
-        }
-
-        if(!Number.isFinite(value)) {
-            throw new TypeError(`Value is not a finite number: ${value}`);
+        if (typeof value !== 'number' || isNaN(value) || !Number.isFinite(value)) {
+            throw new TypeError(`Value is not a valid finite number: ${value}`);
         }
 
         const key = JSON.stringify(labels);
         this.values.set(key, (this.values.get(key) || 0) - value);
+    }
+
+    // Overload signatures
+    set(value: number): void;
+    set(labels: string[], value: number): void;
+
+    // Implementation
+    set(arg1: number | string[], arg2?: number): void {
+        let labels: string[] = [];
+        let value: number;
+
+        if (typeof arg1 === "number") {
+            value = arg1;
+        } else if (Array.isArray(arg1)) {
+            labels = arg1;
+            value = arg2 ?? 0;
+        } else {
+            throw new TypeError(`Labels must be an array of strings, got ${typeof arg1}`);
+        }
+
+        if (typeof value !== "number" || isNaN(value) || !Number.isFinite(value)) {
+            throw new TypeError(`Value is not a valid finite number: ${value}`);
+        }
+
+        const key = JSON.stringify(labels);
+        this.values.set(key, value);
     }
 
     get(labels: string[] = []) {
@@ -73,6 +102,7 @@ export class Gauge {
         return this.values.get(key) || 0;
     }
 
+    // clear all values
     reset() {
         this.values.clear();
     }
@@ -83,14 +113,20 @@ export class Gauge {
 
         for(const [key, value] of this.values) {
             const splitKeys = JSON.parse(key);
-            output += `${this.name} {`;
+            output += `${this.name} `;
             for(let i=0; i<this.labels.length; i++) {
+                if(i === 0) {
+                    output += `{`;
+                }
                 output += `${this.labels[i]}="${splitKeys[i]}"`;
                 if(i != this.labels.length-1) {
                     output += ", ";
                 }
+                if(i === this.labels.length-1) {
+                    output += `} `;
+                }
             }
-            output += `}: ${value}\n`;
+            output += `${value}\n`;
         }
         return output;
     }

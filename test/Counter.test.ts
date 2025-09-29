@@ -48,7 +48,7 @@ describe("Counter", () => {
 
     it("should return Prometheus format", () => {
         const prometheus = counter.toPrometheus();
-        expect(prometheus).toBe(`# HELP test counter \n# TYPE test Counter\ntest {method="get", route="/"}: 5\n`);
+        expect(prometheus).toBe(`# HELP test test counter \n# TYPE test counter\ntest {method="get", route="/"}: 5\n`);
     });
 
     it("should handle multiple label combinations", () => {
@@ -59,6 +59,6 @@ describe("Counter", () => {
 
     it("should return correct Prometheus format with multiple labels", () => {
         const prometheus = counter.toPrometheus();
-        expect(prometheus).toBe(`# HELP test counter \n# TYPE test Counter\ntest {method="get", route="/"}: 5\ntest {method="post", route="/submit"}: 3\n`);
+        expect(prometheus).toBe(`# HELP test test counter \n# TYPE test counter\ntest {method="get", route="/"}: 5\ntest {method="post", route="/submit"}: 3\n`);
     });
 });
