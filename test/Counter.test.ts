@@ -1,6 +1,7 @@
 import { Counter } from "../src/metrics/Counter.js";
 
 let counter: Counter;
+let counter2: Counter;
 
 beforeAll(() => {
     counter = new Counter(
@@ -8,9 +9,28 @@ beforeAll(() => {
         "test counter",
         ["method", "route"]
     )
+
+    counter2 = new Counter(
+        "test2",
+        "another test counter",
+    )
 })
 
 describe("Counter", () => {
+    it("should initialize to zero", () => {
+        expect(counter2.getValue()).toBe(0);
+    });
+
+    it("should increment counter without labels", () => {
+        counter2.inc();
+        expect(counter2.getValue()).toBe(1);
+    });
+
+    it("should reset counter without labels", () => {
+        counter2.reset();
+        expect(counter2.getValue()).toBe(0);
+    });
+
     it("should return zero for uninitialized labels", () => {
         expect(counter.getValue(["put", "/update"])).toBe(0);
     });
