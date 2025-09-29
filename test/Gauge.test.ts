@@ -83,6 +83,6 @@ describe("Gauge", () => {
         const prom1 = gauge.toPrometheus();
         const prom2 = gauge2.toPrometheus();
         expect(prom1).toBe(`# HELP test gauge simple gauge testing \n# TYPE test gauge gauge \ntest gauge 10\n`);
-        expect(prom2).toBe(`# HELP test gauge 2 gaug with labels \n# TYPE test gauge 2 gauge \ntest gauge 2 {method="GET", route="/test"} 5\n`);
+        expect(prom2).toBe(`# HELP test gauge 2 gaug with labels \n# TYPE test gauge 2 gauge \ntest gauge 2{method="GET", route="/test"} 5\n`);
     });
 });

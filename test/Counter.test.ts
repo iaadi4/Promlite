@@ -33,22 +33,22 @@ describe("Counter", () => {
     it("should throw error on label count mismatch", () => {
         expect(() => {
             counter.inc(["get"]);
-        }).toThrow("Label count mismatch!");
+        }).toThrow("Label count mismatch, expected 2 but got 1");
 
         expect(() => {
             counter.getValue(["get"]);
-        }).toThrow("Label count mismatch!");
+        }).toThrow("Label count mismatch, expected 2 but got 1");
     });
 
     it("should throw error when decrementing", () => {
         expect(() => {
             counter.inc(["get", "/"], -1);
-        }).toThrow("Counter cannot be decreased!");
+        }).toThrow("Counter cannot be decreased");
     });
 
     it("should return Prometheus format", () => {
         const prometheus = counter.toPrometheus();
-        expect(prometheus).toBe(`# HELP test test counter \n# TYPE test counter\ntest {method="get", route="/"}: 5\n`);
+        expect(prometheus).toBe(`# HELP test test counter \n# TYPE test counter\ntest{method="get", route="/"} 5\n`);
     });
 
     it("should handle multiple label combinations", () => {
@@ -59,6 +59,13 @@ describe("Counter", () => {
 
     it("should return correct Prometheus format with multiple labels", () => {
         const prometheus = counter.toPrometheus();
-        expect(prometheus).toBe(`# HELP test test counter \n# TYPE test counter\ntest {method="get", route="/"}: 5\ntest {method="post", route="/submit"}: 3\n`);
+        expect(prometheus).toBe(`# HELP test test counter \n# TYPE test counter\ntest{method="get", route="/"} 5\ntest{method="post", route="/submit"} 3\n`);
+    });
+
+    it("should throw error on invalid increment values", () => {
+        expect(() => counter.inc(["get", "/"], NaN)).toThrow(TypeError);
+        expect(() => counter.inc(["get", "/"], Infinity)).toThrow(TypeError);
+        expect(() => counter.inc(["get", "/"], -Infinity)).toThrow(TypeError);
+        expect(() => counter.inc(["get", "/"], "string" as unknown as number)).toThrow(TypeError);
     });
 });

@@ -113,7 +113,7 @@ export class Gauge {
 
         for(const [key, value] of this.values) {
             const splitKeys = JSON.parse(key);
-            output += `${this.name} `;
+            output += `${this.name}`;
             for(let i=0; i<this.labels.length; i++) {
                 if(i === 0) {
                     output += `{`;
@@ -123,10 +123,10 @@ export class Gauge {
                     output += ", ";
                 }
                 if(i === this.labels.length-1) {
-                    output += `} `;
+                    output += `}`;
                 }
             }
-            output += `${value}\n`;
+            output += ` ${value}\n`;
         }
         return output;
     }
