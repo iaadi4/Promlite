@@ -1,0 +1,12 @@
+node_modules/
+dist/
+lib/
+build/
+coverage/
+*.min.js
+*.min.css
+package-lock.json
+yarn.lock
+.git/
+.github/
+*.md
