@@ -8,6 +8,10 @@
   ],
   "license": "ISC",
   "author": "Aditya Singh",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/iaadi4/Promlite.git"
+  },
   "type": "module",
   "main": "index.js",
   "scripts": {
