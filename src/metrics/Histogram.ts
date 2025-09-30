@@ -65,6 +65,14 @@ export class Histogram {
         this.totalCount.set(key, (this.totalCount.get(key) || 0) + 1);
     }
 
+    get(labels: string[] = []): { totalCount: number; totalSum: number } { 
+        const key = JSON.stringify(labels);
+        return {
+            totalCount: this.totalCount.get(key) || 0,
+            totalSum: this.totalSum.get(key) || 0
+        };
+    }
+
     reset() {
         this.counts.clear();
         this.totalSum.clear();

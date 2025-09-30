@@ -20,11 +20,13 @@ export class Counter {
         let labels: string[] = [];
         let amount: number;
 
-        if (typeof arg1 === "number") {
+        if(arg1 == undefined) {
+            amount = 1;
+        } else if (typeof arg1 === "number") {
             amount = arg1;
         } else if (Array.isArray(arg1)) {
             labels = arg1;
-            amount = arg2 ?? 1;  // default to 1
+            amount = arg2 ?? 1  // default to 1
         } else {
             throw new TypeError(`Invalid argument type: ${typeof arg1}`);
         }
