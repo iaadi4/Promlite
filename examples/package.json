@@ -1,0 +1,36 @@
+{
+  "name": "prometheus-client-examples",
+  "version": "1.0.0",
+  "description": "Examples demonstrating prometheus-client usage with Express.js",
+  "scripts": {
+    "counter": "node counter/server.js",
+    "gauge": "node gauge/server.js",
+    "histogram": "node histogram/server.js",
+    "comprehensive": "node comprehensive/server.js",
+    "dev:counter": "nodemon counter/server.js",
+    "dev:gauge": "nodemon gauge/server.js",
+    "dev:histogram": "nodemon histogram/server.js",
+    "dev:comprehensive": "nodemon comprehensive/server.js",
+    "build": "cd .. && npm run build",
+    "test": "node test-examples.js",
+    "start": "npm run comprehensive"
+  },
+  "keywords": [
+    "prometheus",
+    "metrics",
+    "express",
+    "monitoring",
+    "examples"
+  ],
+  "author": "Aditya Singh",
+  "license": "ISC",
+  "dependencies": {
+    "express": "^4.18.2"
+  },
+  "devDependencies": {
+    "nodemon": "^3.0.1"
+  },
+  "engines": {
+    "node": ">=16.0.0"
+  }
+}
