@@ -1,6 +1,6 @@
-# Prometheus Client Examples
+# Promlite Examples
 
-This directory contains comprehensive examples demonstrating how to use the prometheus-client library with Express.js applications.
+This directory contains comprehensive examples demonstrating how to use the promlite library with Express.js applications.
 
 ## 📁 Examples Overview
 
@@ -110,7 +110,7 @@ Each example exposes metrics at the `/metrics` endpoint:
 
 ### Creating Metrics
 ```javascript
-const { Counter, Gauge, Histogram } = require('prometheus-client');
+const { Counter, Gauge, Histogram } = require('promlite');
 
 // Counter - tracks increasing values
 const requestCounter = new Counter(
@@ -316,7 +316,7 @@ To scrape these metrics with Prometheus, add this to your `prometheus.yml`:
 
 ```yaml
 scrape_configs:
-  - job_name: 'prometheus-client-examples'
+  - job_name: 'promlite-examples'
     static_configs:
       - targets: ['localhost:3000', 'localhost:3001', 'localhost:3002', 'localhost:3003']
     scrape_interval: 15s

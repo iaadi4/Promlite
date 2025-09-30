@@ -16,13 +16,13 @@ A TypeScript/Node.js Prometheus client library that lets applications define and
 ## Installation
 
 ```bash
-npm install prometheus-client
+npm install promlite
 ```
 
 ## Quick Start
 
 ```typescript
-import { Counter, Gauge, Histogram, register } from 'prometheus-client';
+import { Counter, Gauge, Histogram, register } from 'promlite';
 
 // Create metrics
 const httpRequestsTotal = new Counter(
@@ -96,7 +96,7 @@ counter.toPrometheus();
 #### Example
 
 ```typescript
-import { Counter } from 'prometheus-client';
+import { Counter } from 'promlite';
 
 const httpRequestsTotal = new Counter(
   'http_requests_total',
@@ -155,7 +155,7 @@ gauge.toPrometheus();
 #### Example
 
 ```typescript
-import { Gauge } from 'prometheus-client';
+import { Gauge } from 'promlite';
 
 const memoryUsage = new Gauge(
   'memory_usage_bytes',
@@ -206,7 +206,7 @@ histogram.toPrometheus();
 #### Example
 
 ```typescript
-import { Histogram } from 'prometheus-client';
+import { Histogram } from 'promlite';
 
 const httpRequestDuration = new Histogram(
   'http_request_duration_seconds',
@@ -233,7 +233,7 @@ The Registry class manages multiple metrics and provides a central endpoint for 
 #### Methods
 
 ```typescript
-import { Registry, Counter, Gauge } from 'prometheus-client';
+import { Registry, Counter, Gauge } from 'promlite';
 
 const registry = new Registry();
 const counter = new Counter('my_counter', 'A counter');
@@ -264,7 +264,7 @@ registry.clear();
 The library provides a default registry instance:
 
 ```typescript
-import { register, Counter } from 'prometheus-client';
+import { register, Counter } from 'promlite';
 
 const counter = new Counter('requests_total', 'Total requests');
 register.register('requests_total', counter);
@@ -279,7 +279,7 @@ console.log(register.metrics());
 
 ```typescript
 import express from 'express';
-import { Counter, Histogram, register } from 'prometheus-client';
+import { Counter, Histogram, register } from 'promlite';
 
 const app = express();
 
@@ -346,7 +346,7 @@ scrape_configs:
 The library throws errors for various invalid operations:
 
 ```typescript
-import { Counter } from 'prometheus-client';
+import { Counter } from 'promlite';
 
 const counter = new Counter('test', 'Test counter', ['label1']);
 
@@ -374,8 +374,8 @@ counter.inc(['value1'], Infinity); // TypeError: Value is not a valid finite num
 This library is written in TypeScript and provides full type definitions:
 
 ```typescript
-import { Counter, Gauge, Histogram, Registry } from 'prometheus-client';
-import type { CounterType, GaugeType, HistogramType } from 'prometheus-client';
+import { Counter, Gauge, Histogram, Registry } from 'promlite';
+import type { CounterType, GaugeType, HistogramType } from 'promlite';
 
 // Type-safe metric creation
 const counter: CounterType = new Counter('name', 'help', ['label']);

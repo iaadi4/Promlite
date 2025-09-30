@@ -1,6 +1,6 @@
-# Contributing to Prometheus Client
+# Contributing to Promlite
 
-Thank you for your interest in contributing to the Prometheus Client library! We welcome contributions from the community and are pleased to have you participate.
+Thank you for your interest in contributing to the Promlite library! We welcome contributions from the community and are pleased to have you participate.
 
 ## Table of Contents
 
@@ -85,7 +85,7 @@ npm run format
 ## Project Structure
 
 ```
-prom-client/
+promlite/
 ├── src/                    # Source code
 │   ├── index.ts           # Main entry point and exports
 │   └── metrics/           # Metric implementations
