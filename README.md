@@ -386,7 +386,3 @@ const histogram: HistogramType = new Histogram('name', 'help', [0.1, 0.5, 1]);
 ## Contributing
 
 See [CONTRIBUTING.md](./CONTRIBUTING.md) for development setup and contribution guidelines.
-
-## License
-
-ISC
