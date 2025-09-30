@@ -1,6 +1,6 @@
 {
   "name": "promlite",
-  "version": "1.0.0",
+  "version": "1.0.1",
   "description": "A Prometheus client is a library that lets applications define and collect metrics (counters, gauges, histograms, summaries) and expose them on an HTTP endpoint (usually /metrics) in the Prometheus text format so that Prometheus can scrape and store them.",
   "keywords": [
     "prometheus",
