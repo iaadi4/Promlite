@@ -65,7 +65,11 @@ export class Histogram {
         this.totalCount.set(key, (this.totalCount.get(key) || 0) + 1);
     }
 
-    get(labels: string[] = []): { totalCount: number; totalSum: number } { 
+    get(labels: string[] = []): { totalCount: number; totalSum: number } {
+        if (labels.length !== this.labels.length) {
+            throw new Error(`Label count mismatch, expected ${this.labels.length} but got ${labels.length}`);
+        }
+        
         const key = JSON.stringify(labels);
         return {
             totalCount: this.totalCount.get(key) || 0,
