@@ -30,7 +30,9 @@ export class Gauge {
     }
 
     if (labels.length !== this.labels.length) {
-      throw new Error(`Label count mismatch, expected ${this.labels.length} but got ${labels.length}`);
+      throw new Error(
+        `Label count mismatch, expected ${this.labels.length} but got ${labels.length}`,
+      );
     }
 
     if (typeof value !== 'number' || isNaN(value) || !Number.isFinite(value)) {
@@ -60,7 +62,9 @@ export class Gauge {
     }
 
     if (labels.length !== this.labels.length) {
-      throw new Error(`Label count mismatch, expected ${this.labels.length} but got ${labels.length}`);
+      throw new Error(
+        `Label count mismatch, expected ${this.labels.length} but got ${labels.length}`,
+      );
     }
 
     if (typeof value !== 'number' || isNaN(value) || !Number.isFinite(value)) {
@@ -88,7 +92,9 @@ export class Gauge {
       labels = arg1;
       value = arg2 ?? 0;
     } else {
-      throw new TypeError(`Labels must be an array of strings, got ${typeof arg1}`);
+      throw new TypeError(
+        `Labels must be an array of strings, got ${typeof arg1}`,
+      );
     }
 
     if (typeof value !== 'number' || isNaN(value) || !Number.isFinite(value)) {
@@ -120,7 +126,7 @@ export class Gauge {
     for (const [key, value] of this.values) {
       const splitKeys = JSON.parse(key);
       output += `${this.name}`;
-      for (let i=0; i<this.labels.length; i++) {
+      for (let i = 0; i < this.labels.length; i++) {
         if (i === 0) {
           output += '{';
         }
@@ -128,7 +134,7 @@ export class Gauge {
         if (i !== this.labels.length - 1) {
           output += ', ';
         }
-        if (i === this.labels.length-1) {
+        if (i === this.labels.length - 1) {
           output += '}';
         }
       }

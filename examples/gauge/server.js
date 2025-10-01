@@ -7,18 +7,18 @@ const PORT = process.env.PORT || 3002;
 // Create Gauge metrics
 const activeConnections = new Gauge(
   'active_connections',
-  'Number of active connections'
+  'Number of active connections',
 );
 
 const memoryUsage = new Gauge(
   'memory_usage_bytes',
   'Memory usage in bytes',
-  ['type']
+  ['type'],
 );
 
 const cpuUsage = new Gauge(
   'cpu_usage_percent',
-  'CPU usage percentage'
+  'CPU usage percentage',
 );
 
 // Register the gauges
@@ -32,25 +32,25 @@ let connectionCount = 0;
 app.use((req, res, next) => {
   connectionCount++;
   activeConnections.set(connectionCount);
-  
+
   res.on('finish', () => {
     connectionCount--;
     activeConnections.set(connectionCount);
   });
-  
+
   next();
 });
 
 // Update system metrics every 5 seconds
 setInterval(() => {
   const memInfo = process.memoryUsage();
-  
+
   // Update memory usage metrics
   memoryUsage.set(['rss'], memInfo.rss);
   memoryUsage.set(['heapTotal'], memInfo.heapTotal);
   memoryUsage.set(['heapUsed'], memInfo.heapUsed);
   memoryUsage.set(['external'], memInfo.external);
-  
+
   // Simulate CPU usage (in real app, you'd use actual CPU metrics)
   const cpuPercent = Math.random() * 100;
   cpuUsage.set(cpuPercent);
@@ -58,10 +58,10 @@ setInterval(() => {
 
 // Sample routes
 app.get('/', (req, res) => {
-  res.json({ 
+  res.json({
     message: 'Welcome to Gauge example!',
     activeConnections: connectionCount,
-    memoryUsage: process.memoryUsage()
+    memoryUsage: process.memoryUsage(),
   });
 });
 
@@ -69,10 +69,10 @@ app.get('/load', (req, res) => {
   // Simulate some work that uses memory
   const largeArray = new Array(100000).fill('data');
   setTimeout(() => {
-    res.json({ 
+    res.json({
       message: 'Load test completed',
       arrayLength: largeArray.length,
-      currentMemory: process.memoryUsage()
+      currentMemory: process.memoryUsage(),
     });
   }, 1000);
 });
@@ -84,10 +84,10 @@ app.get('/stress', (req, res) => {
   while (Date.now() - start < 2000) {
     counter++;
   }
-  
-  res.json({ 
+
+  res.json({
     message: 'Stress test completed',
-    iterations: counter
+    iterations: counter,
   });
 });
 
@@ -102,7 +102,7 @@ app.get('/status', (req, res) => {
   res.json({
     activeConnections: connectionCount,
     memoryUsage: process.memoryUsage(),
-    uptime: process.uptime()
+    uptime: process.uptime(),
   });
 });
 

@@ -7,7 +7,12 @@ export class Histogram {
   private totalSum: Map<string, number>;
   private totalCount: Map<string, number>;
 
-  constructor(name: string, help: string, buckets: number[], labels: string[] = []) {
+  constructor(
+    name: string,
+    help: string,
+    buckets: number[],
+    labels: string[] = [],
+  ) {
     this.name = name;
     this.help = help;
     this.buckets = [...buckets].sort((a, b) => a - b);
@@ -31,14 +36,19 @@ export class Histogram {
     if (typeof arg1 === 'number') {
       value = arg1;
     } else if (Array.isArray(arg1)) {
+      if (typeof arg2 !== 'number') {
+        throw new TypeError('Value must be a number');
+      }
       labels = arg1;
-      value = arg2!;
+      value = arg2;
     } else {
       throw new TypeError(`Invalid argument type: ${typeof arg1}`);
     }
 
     if (labels.length !== this.labels.length) {
-      throw new Error(`Label count mismatch, expected ${this.labels.length} but got ${labels.length}`);
+      throw new Error(
+        `Label count mismatch, expected ${this.labels.length} but got ${labels.length}`,
+      );
     }
 
     if (typeof value !== 'number' || isNaN(value) || !Number.isFinite(value)) {
@@ -55,7 +65,7 @@ export class Histogram {
     }
 
     // increment all buckets >= value
-    const bucketMap = this.counts.get(key)!;
+    const bucketMap = this.counts.get(key) ?? new Map();
     for (const bucket of this.buckets) {
       if (value <= bucket) {
         bucketMap.set(bucket, (bucketMap.get(bucket) || 0) + 1);
@@ -69,7 +79,9 @@ export class Histogram {
 
   get(labels: string[] = []): { totalCount: number; totalSum: number } {
     if (labels.length !== this.labels.length) {
-      throw new Error(`Label count mismatch, expected ${this.labels.length} but got ${labels.length}`);
+      throw new Error(
+        `Label count mismatch, expected ${this.labels.length} but got ${labels.length}`,
+      );
     }
 
     const key = JSON.stringify(labels);
@@ -128,7 +140,8 @@ export class Histogram {
           if (i < this.labels.length - 1) {
             output += ', ';
           }
-        } output += '}';
+        }
+        output += '}';
       }
       output += ` ${this.totalSum.get(key) || 0}\n`;
 
@@ -141,7 +154,8 @@ export class Histogram {
           if (i < this.labels.length - 1) {
             output += ', ';
           }
-        } output += '}';
+        }
+        output += '}';
       }
       output += ` ${this.totalCount.get(key) || 0}\n`;
     }

@@ -28,16 +28,22 @@ export class Counter {
       amount = arg1;
     } else if (Array.isArray(arg1)) {
       labels = arg1;
-      amount = arg2 ?? 1;  // default to 1
+      amount = arg2 ?? 1; // default to 1
     } else {
       throw new TypeError(`Invalid argument type: ${typeof arg1}`);
     }
 
     if (labels.length !== this.labels.length) {
-      throw new Error(`Label count mismatch, expected ${this.labels.length} but got ${labels.length}`);
+      throw new Error(
+        `Label count mismatch, expected ${this.labels.length} but got ${labels.length}`,
+      );
     }
 
-    if (typeof amount !== 'number' || isNaN(amount) || !Number.isFinite(amount)) {
+    if (
+      typeof amount !== 'number' ||
+      isNaN(amount) ||
+      !Number.isFinite(amount)
+    ) {
       throw new TypeError(`Amount is not a valid finite number: ${amount}`);
     }
 
@@ -55,7 +61,9 @@ export class Counter {
 
   getValue(labels: string[] = []): number {
     if (labels.length !== this.labels.length) {
-      throw new Error(`Label count mismatch, expected ${this.labels.length} but got ${labels.length}`);
+      throw new Error(
+        `Label count mismatch, expected ${this.labels.length} but got ${labels.length}`,
+      );
     }
     const key = JSON.stringify(labels);
     return this.values.get(key) || 0;
@@ -68,7 +76,7 @@ export class Counter {
     for (const [key, value] of this.values) {
       const splitKeys = JSON.parse(key);
       output += `${this.name}`;
-      for (let i=0; i<this.labels.length; i++) {
+      for (let i = 0; i < this.labels.length; i++) {
         if (i === 0) {
           output += '{';
         }
@@ -76,7 +84,7 @@ export class Counter {
         if (i !== this.labels.length - 1) {
           output += ', ';
         }
-        if (i === this.labels.length-1) {
+        if (i === this.labels.length - 1) {
           output += '}';
         }
       }

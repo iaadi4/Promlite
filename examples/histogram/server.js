@@ -9,14 +9,14 @@ const httpRequestDuration = new Histogram(
   'http_request_duration_seconds',
   'HTTP request duration in seconds',
   [0.005, 0.01, 0.025, 0.05, 0.1, 0.25, 0.5, 1, 2.5, 5, 10],
-  ['method', 'route', 'status_code']
+  ['method', 'route', 'status_code'],
 );
 
 const databaseQueryDuration = new Histogram(
   'database_query_duration_seconds',
   'Database query duration in seconds',
   [0.001, 0.005, 0.01, 0.025, 0.05, 0.1, 0.25, 0.5, 1],
-  ['operation', 'table']
+  ['operation', 'table'],
 );
 
 // Register the histograms
@@ -26,24 +26,24 @@ register.register('database_query_duration_seconds', databaseQueryDuration);
 // Middleware to measure HTTP request duration
 app.use((req, res, next) => {
   const start = Date.now();
-  
+
   res.on('finish', () => {
     const duration = (Date.now() - start) / 1000; // Convert to seconds
     httpRequestDuration.observe([
       req.method,
       req.route?.path || req.path,
-      res.statusCode.toString()
+      res.statusCode.toString(),
     ], duration);
   });
-  
+
   next();
 });
 
 // Simulate database operations
-const simulateDbQuery = async (operation, table, minMs = 10, maxMs = 500) => {
+const simulateDbQuery = async(operation, table, minMs = 10, maxMs = 500) => {
   const start = Date.now();
   const delay = Math.random() * (maxMs - minMs) + minMs;
-  
+
   return new Promise(resolve => {
     setTimeout(() => {
       const duration = (Date.now() - start) / 1000;
@@ -63,45 +63,45 @@ app.get('/fast', (req, res) => {
   res.json({ message: 'Fast response', timestamp: Date.now() });
 });
 
-app.get('/slow', async (req, res) => {
+app.get('/slow', async(req, res) => {
   // Slow response (1-3 seconds)
   const delay = Math.random() * 2000 + 1000;
   await new Promise(resolve => setTimeout(resolve, delay));
   res.json({ message: 'Slow response', delay });
 });
 
-app.get('/users', async (req, res) => {
+app.get('/users', async(req, res) => {
   // Simulate database query
   const queryResult = await simulateDbQuery('SELECT', 'users', 50, 200);
-  res.json({ 
+  res.json({
     users: ['Alice', 'Bob', 'Charlie'],
-    queryTime: queryResult.duration
+    queryTime: queryResult.duration,
   });
 });
 
-app.post('/users', async (req, res) => {
+app.post('/users', async(req, res) => {
   // Simulate database insert
   const queryResult = await simulateDbQuery('INSERT', 'users', 100, 400);
-  res.status(201).json({ 
+  res.status(201).json({
     message: 'User created',
-    queryTime: queryResult.duration
+    queryTime: queryResult.duration,
   });
 });
 
-app.get('/products', async (req, res) => {
+app.get('/products', async(req, res) => {
   // Simulate multiple database queries
   const [productsQuery, categoriesQuery] = await Promise.all([
     simulateDbQuery('SELECT', 'products', 80, 300),
-    simulateDbQuery('SELECT', 'categories', 20, 100)
+    simulateDbQuery('SELECT', 'categories', 20, 100),
   ]);
-  
-  res.json({ 
+
+  res.json({
     products: ['Laptop', 'Mouse', 'Keyboard'],
     categories: ['Electronics', 'Accessories'],
     queryTimes: {
       products: productsQuery.duration,
-      categories: categoriesQuery.duration
-    }
+      categories: categoriesQuery.duration,
+    },
   });
 });
 
@@ -109,9 +109,9 @@ app.get('/variable/:delay', (req, res) => {
   // Variable delay based on parameter
   const delay = Math.min(parseInt(req.params.delay) || 100, 5000);
   setTimeout(() => {
-    res.json({ 
+    res.json({
       message: `Response after ${delay}ms`,
-      requestedDelay: delay
+      requestedDelay: delay,
     });
   }, delay);
 });
@@ -131,9 +131,9 @@ app.get('/stats', (req, res) => {
       databaseQueryDuration: 'Measures database query duration in seconds',
       buckets: {
         http: [0.005, 0.01, 0.025, 0.05, 0.1, 0.25, 0.5, 1, 2.5, 5, 10],
-        database: [0.001, 0.005, 0.01, 0.025, 0.05, 0.1, 0.25, 0.5, 1]
-      }
-    }
+        database: [0.001, 0.005, 0.01, 0.025, 0.05, 0.1, 0.25, 0.5, 1],
+      },
+    },
   });
 });
 

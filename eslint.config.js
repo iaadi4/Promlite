@@ -6,9 +6,57 @@ export default [
   // ESLint recommended rules for all files
   js.configs.recommended,
   
-  // Apply to all JavaScript and TypeScript files
+  // Configuration for example files (must come before main config)
   {
-    files: ['**/*.{js,mjs,cjs,ts}'],
+    files: ['examples/**/*.js'],
+    languageOptions: {
+      ecmaVersion: 2022,
+      sourceType: 'commonjs',
+      globals: {
+        console: 'readonly',
+        process: 'readonly',
+        Buffer: 'readonly',
+        __dirname: 'readonly',
+        __filename: 'readonly',
+        exports: 'writable',
+        module: 'writable',
+        require: 'readonly',
+        global: 'readonly',
+        setTimeout: 'readonly',
+        clearTimeout: 'readonly',
+        setInterval: 'readonly',
+        clearInterval: 'readonly'
+      }
+    },
+    rules: {
+      // General JavaScript rules for examples
+      'prefer-const': 'error',
+      'no-var': 'error',
+      'no-console': 'off', // Allow console in examples
+      'eqeqeq': ['error', 'always'],
+      'curly': ['error', 'all'],
+      'brace-style': ['error', '1tbs'],
+      'comma-dangle': ['error', 'always-multiline'],
+      'quotes': ['error', 'single'],
+      'semi': ['error', 'always'],
+      'indent': ['error', 2],
+      'object-curly-spacing': ['error', 'always'],
+      'array-bracket-spacing': ['error', 'never'],
+      'space-before-function-paren': ['error', 'never'],
+      'space-in-parens': ['error', 'never'],
+      'space-before-blocks': 'error',
+      'keyword-spacing': 'error',
+      'comma-spacing': 'error',
+      'no-trailing-spaces': 'error',
+      'eol-last': 'error',
+      'no-multiple-empty-lines': ['error', { max: 2, maxEOF: 1 }]
+    }
+  },
+  
+  // Apply to TypeScript files and non-example JavaScript files
+  {
+    files: ['**/*.{mjs,cjs,ts}', '**/*.js'],
+    ignores: ['examples/**/*.js'], // Exclude examples from this config
     languageOptions: {
       ecmaVersion: 2022,
       sourceType: 'module',
@@ -82,6 +130,9 @@ export default [
     languageOptions: {
       ecmaVersion: 2022,
       sourceType: 'commonjs',
+      // Don't use TypeScript parser for example JS files
+      parser: undefined,
+      parserOptions: undefined,
       globals: {
         console: 'readonly',
         process: 'readonly',
