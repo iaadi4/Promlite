@@ -57,30 +57,50 @@ npm test
 
 ### Scripts
 
-The project includes several npm scripts:
+The project includes several npm scripts for development:
 
 ```bash
-# Run tests
-npm test
+# Run all checks (recommended before committing)
+npm run check
 
-# Run tests in watch mode (for development)
-npm run test:watch
+# Individual checks
+npm run type-check        # TypeScript type checking
+npm run lint             # ESLint code quality check
+npm run format:check     # Check if code is properly formatted
 
-# Build the project
-npm run build
+# Fixes and formatting
+npm run lint:fix         # Fix ESLint issues automatically
+npm run format           # Format code with Prettier
 
-# Run type checking
-npm run type-check
+# Testing
+npm test                 # Run tests
+npm run test:watch       # Run tests in watch mode (for development)
 
-# Run linting
-npm run lint
-
-# Fix linting issues automatically
-npm run lint:fix
-
-# Format code
-npm run format
+# Build
+npm run build            # Build the project
 ```
+
+### Development Workflow
+
+We use an integrated approach for code quality:
+
+1. **ESLint** handles code quality and logic rules
+2. **Prettier** handles all code formatting
+3. **TypeScript** handles type checking
+
+**Before committing:**
+```bash
+# Run all checks at once
+npm run check
+
+# Or fix issues automatically
+npm run lint:fix && npm run format
+```
+
+**The `npm run check` command runs:**
+- Type checking (`tsc --noEmit`)
+- Linting (`eslint`)
+- Format checking (`prettier --check`)
 
 ## Project Structure
 
@@ -164,14 +184,64 @@ test(gauge): add tests for label validation
 
 ### Code Style
 
-We use Prettier for code formatting and ESLint for linting. The configuration is included in the project.
+We use **Prettier** for code formatting and **ESLint** for code quality checks. The tools are configured to work together without conflicts.
 
-**Key style points:**
-- Use 4 spaces for indentation
-- Use semicolons
-- Use single quotes for strings
-- Trailing commas in multi-line structures
-- Line length limit of 100 characters
+#### ESLint Configuration
+- Handles code quality rules (prefer-const, no-var, curly, etc.)
+- TypeScript-specific rules for type safety
+- Uses `eslint-config-prettier` to disable formatting rules
+
+#### Prettier Configuration
+- Handles all code formatting automatically
+- Configuration in `.prettierrc`:
+  - 2 spaces for indentation
+  - Single quotes for strings
+  - Semicolons required
+  - Trailing commas (ES5 style)
+  - Line length limit of 80 characters
+
+#### Workflow
+1. **ESLint** checks for code quality issues
+2. **Prettier** formats the code consistently
+3. No conflicts between the tools
+
+## ESLint and Prettier Integration
+
+This project uses a carefully configured setup to avoid conflicts between ESLint and Prettier:
+
+### Configuration Files
+- `eslint.config.js` - ESLint configuration with TypeScript support
+- `.prettierrc` - Prettier formatting configuration
+- `.prettierignore` - Files to ignore during formatting
+
+### How It Works
+1. **ESLint** is configured with `eslint-config-prettier` which disables all formatting-related rules
+2. **Prettier** handles all code formatting (indentation, quotes, semicolons, etc.)
+3. **ESLint** focuses only on code quality (logic errors, best practices, etc.)
+
+### CI/CD Integration
+Our GitHub Actions CI runs `npm run check` which executes:
+1. TypeScript compilation check
+2. ESLint code quality check  
+3. Prettier formatting check
+
+This ensures consistent code quality and formatting across all contributions.
+
+### Troubleshooting
+If you encounter formatting or linting conflicts:
+
+```bash
+# Fix all issues automatically
+npm run lint:fix && npm run format
+
+# Check what's wrong
+npm run check
+
+# Run individual checks
+npm run lint          # Check for code quality issues
+npm run format:check  # Check formatting
+npm run type-check    # Check TypeScript types
+```
 
 ### Error Handling
 
@@ -333,7 +403,8 @@ Follow this format for API documentation:
 2. **Code**: Implement your changes following coding standards
 3. **Test**: Add comprehensive tests for new functionality
 4. **Documentation**: Update documentation as needed
-5. **Self Review**: Review your own code before submitting
+5. **Quality Checks**: Run `npm run check` to ensure all checks pass
+6. **Self Review**: Review your own code before submitting
 
 ### PR Requirements
 
@@ -361,6 +432,8 @@ Brief description of changes
 - [ ] No decrease in test coverage
 
 ## Checklist
+- [ ] All quality checks pass (`npm run check`)
+- [ ] Tests pass locally (`npm test`)
 - [ ] Code follows project style guidelines
 - [ ] Self-review completed
 - [ ] Documentation updated

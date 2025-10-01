@@ -15,46 +15,39 @@ app.use(express.json());
 const httpRequestsTotal = new Counter(
   'http_requests_total',
   'Total number of HTTP requests',
-  ['method', 'route', 'status_code'],
+  ['method', 'route', 'status_code']
 );
 
-const errorsTotal = new Counter(
-  'errors_total',
-  'Total number of errors',
-  ['type', 'route'],
-);
+const errorsTotal = new Counter('errors_total', 'Total number of errors', [
+  'type',
+  'route',
+]);
 
 // Gauge metrics
 const activeConnections = new Gauge(
   'active_connections',
-  'Number of active connections',
+  'Number of active connections'
 );
 
-const memoryUsage = new Gauge(
-  'memory_usage_bytes',
-  'Memory usage in bytes',
-  ['type'],
-);
+const memoryUsage = new Gauge('memory_usage_bytes', 'Memory usage in bytes', [
+  'type',
+]);
 
-const queueSize = new Gauge(
-  'queue_size',
-  'Current queue size',
-  ['queue_name'],
-);
+const queueSize = new Gauge('queue_size', 'Current queue size', ['queue_name']);
 
 // Histogram metrics
 const httpRequestDuration = new Histogram(
   'http_request_duration_seconds',
   'HTTP request duration in seconds',
   [0.005, 0.01, 0.025, 0.05, 0.1, 0.25, 0.5, 1, 2.5, 5],
-  ['method', 'route'],
+  ['method', 'route']
 );
 
 const databaseQueryDuration = new Histogram(
   'database_query_duration_seconds',
   'Database query duration in seconds',
   [0.001, 0.005, 0.01, 0.025, 0.05, 0.1, 0.25, 0.5, 1],
-  ['operation', 'table'],
+  ['operation', 'table']
 );
 
 // Register all metrics
@@ -87,22 +80,15 @@ app.use((req, res, next) => {
     const duration = (Date.now() - start) / 1000;
     const route = req.route?.path || req.path;
 
-    httpRequestsTotal.inc([
-      req.method,
-      route,
-      res.statusCode.toString(),
-    ]);
+    httpRequestsTotal.inc([req.method, route, res.statusCode.toString()]);
 
-    httpRequestDuration.observe([
-      req.method,
-      route,
-    ], duration);
+    httpRequestDuration.observe([req.method, route], duration);
   });
   next();
 });
 
 // Simulate database operations
-const simulateDbQuery = async(operation, table, minMs = 10, maxMs = 200) => {
+const simulateDbQuery = async (operation, table, minMs = 10, maxMs = 200) => {
   const start = Date.now();
   const delay = Math.random() * (maxMs - minMs) + minMs;
 
@@ -153,7 +139,7 @@ app.get('/', (req, res) => {
   });
 });
 
-app.get('/api/users', async(req, res) => {
+app.get('/api/users', async (req, res) => {
   try {
     const users = await simulateDbQuery('SELECT', 'users', 20, 100);
     res.json({
@@ -172,7 +158,7 @@ app.get('/api/users', async(req, res) => {
   }
 });
 
-app.post('/api/users', async(req, res) => {
+app.post('/api/users', async (req, res) => {
   try {
     // Add to processing queue
     const task = { id: Date.now(), type: 'create_user', data: req.body };
@@ -198,7 +184,7 @@ app.post('/api/users', async(req, res) => {
   }
 });
 
-app.get('/api/products', async(req, res) => {
+app.get('/api/products', async (req, res) => {
   try {
     // Simulate multiple database queries
     const [products, categories, inventory] = await Promise.all([
@@ -227,7 +213,7 @@ app.get('/api/products', async(req, res) => {
   }
 });
 
-app.post('/api/orders', async(req, res) => {
+app.post('/api/orders', async (req, res) => {
   try {
     // Add to processing queue
     const task = { id: Date.now(), type: 'create_order', data: req.body };
@@ -261,7 +247,7 @@ app.post('/api/orders', async(req, res) => {
   }
 });
 
-app.get('/slow', async(req, res) => {
+app.get('/slow', async (req, res) => {
   // Simulate slow operation
   const delay = Math.random() * 3000 + 1000; // 1-4 seconds
   await new Promise(resolve => setTimeout(resolve, delay));
@@ -322,20 +308,42 @@ app.use((error, req, res, next) => {
 // =============================================================================
 
 app.listen(PORT, () => {
-  console.log(`🚀 Comprehensive Metrics Server running on http://localhost:${PORT}`);
+  console.log(
+    `🚀 Comprehensive Metrics Server running on http://localhost:${PORT}`
+  );
   console.log(`📊 Metrics available at http://localhost:${PORT}/metrics`);
   console.log('\n🔢 Available Metrics:');
   console.log('   Counters: http_requests_total, errors_total');
   console.log('   Gauges: active_connections, memory_usage_bytes, queue_size');
-  console.log('   Histograms: http_request_duration_seconds, database_query_duration_seconds');
+  console.log(
+    '   Histograms: http_request_duration_seconds, database_query_duration_seconds'
+  );
   console.log('\n🛠️  API Endpoints:');
-  console.log(`   - GET  ${PORT === 3000 ? 'http://localhost:3000' : `http://localhost:${PORT}`}/ (overview)`);
-  console.log(`   - GET  ${PORT === 3000 ? 'http://localhost:3000' : `http://localhost:${PORT}`}/api/users`);
-  console.log(`   - POST ${PORT === 3000 ? 'http://localhost:3000' : `http://localhost:${PORT}`}/api/users`);
-  console.log(`   - GET  ${PORT === 3000 ? 'http://localhost:3000' : `http://localhost:${PORT}`}/api/products`);
-  console.log(`   - POST ${PORT === 3000 ? 'http://localhost:3000' : `http://localhost:${PORT}`}/api/orders`);
-  console.log(`   - GET  ${PORT === 3000 ? 'http://localhost:3000' : `http://localhost:${PORT}`}/slow (1-4s response)`);
-  console.log(`   - GET  ${PORT === 3000 ? 'http://localhost:3000' : `http://localhost:${PORT}`}/error (500 error)`);
-  console.log(`   - GET  ${PORT === 3000 ? 'http://localhost:3000' : `http://localhost:${PORT}`}/health`);
-  console.log('\n💡 Try making multiple requests to different endpoints to see metrics in action!');
+  console.log(
+    `   - GET  ${PORT === 3000 ? 'http://localhost:3000' : `http://localhost:${PORT}`}/ (overview)`
+  );
+  console.log(
+    `   - GET  ${PORT === 3000 ? 'http://localhost:3000' : `http://localhost:${PORT}`}/api/users`
+  );
+  console.log(
+    `   - POST ${PORT === 3000 ? 'http://localhost:3000' : `http://localhost:${PORT}`}/api/users`
+  );
+  console.log(
+    `   - GET  ${PORT === 3000 ? 'http://localhost:3000' : `http://localhost:${PORT}`}/api/products`
+  );
+  console.log(
+    `   - POST ${PORT === 3000 ? 'http://localhost:3000' : `http://localhost:${PORT}`}/api/orders`
+  );
+  console.log(
+    `   - GET  ${PORT === 3000 ? 'http://localhost:3000' : `http://localhost:${PORT}`}/slow (1-4s response)`
+  );
+  console.log(
+    `   - GET  ${PORT === 3000 ? 'http://localhost:3000' : `http://localhost:${PORT}`}/error (500 error)`
+  );
+  console.log(
+    `   - GET  ${PORT === 3000 ? 'http://localhost:3000' : `http://localhost:${PORT}`}/health`
+  );
+  console.log(
+    '\n💡 Try making multiple requests to different endpoints to see metrics in action!'
+  );
 });

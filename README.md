@@ -383,6 +383,38 @@ const gauge: GaugeType = new Gauge('name', 'help');
 const histogram: HistogramType = new Histogram('name', 'help', [0.1, 0.5, 1]);
 ```
 
+## Development
+
+### Quick Development Setup
+
+```bash
+# Clone and install dependencies
+git clone https://github.com/iaadi4/Promlite.git
+cd prom-client
+npm install
+
+# Run all checks (type-check, lint, and format)
+npm run check
+
+# Fix linting and formatting issues
+npm run lint:fix
+npm run format
+
+# Run tests
+npm test
+```
+
+### Available Scripts
+
+- `npm run check` - Run all checks (type-check, lint, format-check)
+- `npm run type-check` - TypeScript type checking
+- `npm run lint` - ESLint code quality check
+- `npm run lint:fix` - Fix ESLint issues automatically
+- `npm run format` - Format code with Prettier
+- `npm run format:check` - Check if code is properly formatted
+- `npm test` - Run test suite
+- `npm run build` - Build the project
+
 ## Contributing
 
-See [CONTRIBUTING.md](./CONTRIBUTING.md) for development setup and contribution guidelines.
+See [CONTRIBUTING.md](./CONTRIBUTING.md) for detailed development setup and contribution guidelines.

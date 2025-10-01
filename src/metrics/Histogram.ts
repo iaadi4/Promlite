@@ -11,7 +11,7 @@ export class Histogram {
     name: string,
     help: string,
     buckets: number[],
-    labels: string[] = [],
+    labels: string[] = []
   ) {
     this.name = name;
     this.help = help;
@@ -47,7 +47,7 @@ export class Histogram {
 
     if (labels.length !== this.labels.length) {
       throw new Error(
-        `Label count mismatch, expected ${this.labels.length} but got ${labels.length}`,
+        `Label count mismatch, expected ${this.labels.length} but got ${labels.length}`
       );
     }
 
@@ -80,7 +80,7 @@ export class Histogram {
   get(labels: string[] = []): { totalCount: number; totalSum: number } {
     if (labels.length !== this.labels.length) {
       throw new Error(
-        `Label count mismatch, expected ${this.labels.length} but got ${labels.length}`,
+        `Label count mismatch, expected ${this.labels.length} but got ${labels.length}`
       );
     }
 

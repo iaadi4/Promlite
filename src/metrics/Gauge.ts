@@ -31,7 +31,7 @@ export class Gauge {
 
     if (labels.length !== this.labels.length) {
       throw new Error(
-        `Label count mismatch, expected ${this.labels.length} but got ${labels.length}`,
+        `Label count mismatch, expected ${this.labels.length} but got ${labels.length}`
       );
     }
 
@@ -63,7 +63,7 @@ export class Gauge {
 
     if (labels.length !== this.labels.length) {
       throw new Error(
-        `Label count mismatch, expected ${this.labels.length} but got ${labels.length}`,
+        `Label count mismatch, expected ${this.labels.length} but got ${labels.length}`
       );
     }
 
@@ -93,7 +93,7 @@ export class Gauge {
       value = arg2 ?? 0;
     } else {
       throw new TypeError(
-        `Labels must be an array of strings, got ${typeof arg1}`,
+        `Labels must be an array of strings, got ${typeof arg1}`
       );
     }
 

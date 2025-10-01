@@ -1,6 +1,7 @@
 import js from '@eslint/js';
 import tseslint from '@typescript-eslint/eslint-plugin';
 import tsparser from '@typescript-eslint/parser';
+import prettierConfig from 'eslint-config-prettier';
 
 export default [
   // ESLint recommended rules for all files
@@ -29,27 +30,12 @@ export default [
       }
     },
     rules: {
-      // General JavaScript rules for examples
+      // General JavaScript rules for examples (formatting rules removed - handled by Prettier)
       'prefer-const': 'error',
       'no-var': 'error',
       'no-console': 'off', // Allow console in examples
       'eqeqeq': ['error', 'always'],
-      'curly': ['error', 'all'],
-      'brace-style': ['error', '1tbs'],
-      'comma-dangle': ['error', 'always-multiline'],
-      'quotes': ['error', 'single'],
-      'semi': ['error', 'always'],
-      'indent': ['error', 2],
-      'object-curly-spacing': ['error', 'always'],
-      'array-bracket-spacing': ['error', 'never'],
-      'space-before-function-paren': ['error', 'never'],
-      'space-in-parens': ['error', 'never'],
-      'space-before-blocks': 'error',
-      'keyword-spacing': 'error',
-      'comma-spacing': 'error',
-      'no-trailing-spaces': 'error',
-      'eol-last': 'error',
-      'no-multiple-empty-lines': ['error', { max: 2, maxEOF: 1 }]
+      'curly': ['error', 'all']
     }
   },
   
@@ -77,27 +63,12 @@ export default [
       '@typescript-eslint/no-inferrable-types': 'off',
       '@typescript-eslint/no-non-null-assertion': 'warn',
       
-      // General JavaScript/TypeScript rules
+      // General JavaScript/TypeScript rules (formatting rules removed - handled by Prettier)
       'prefer-const': 'error',
       'no-var': 'error',
       'no-console': 'warn',
       'eqeqeq': ['error', 'always'],
-      'curly': ['error', 'all'],
-      'brace-style': ['error', '1tbs'],
-      'comma-dangle': ['error', 'always-multiline'],
-      'quotes': ['error', 'single'],
-      'semi': ['error', 'always'],
-      'indent': ['error', 2],
-      'object-curly-spacing': ['error', 'always'],
-      'array-bracket-spacing': ['error', 'never'],
-      'space-before-function-paren': ['error', 'never'],
-      'space-in-parens': ['error', 'never'],
-      'space-before-blocks': 'error',
-      'keyword-spacing': 'error',
-      'comma-spacing': 'error',
-      'no-trailing-spaces': 'error',
-      'eol-last': 'error',
-      'no-multiple-empty-lines': ['error', { max: 2, maxEOF: 1 }]
+      'curly': ['error', 'all']
     }
   },
   
@@ -169,5 +140,8 @@ export default [
       '.github/',
       'eslint.config.js' // Ignore this config file itself
     ]
-  }
+  },
+  
+  // Prettier config to disable conflicting rules (must be last)
+  prettierConfig
 ];

@@ -8,7 +8,7 @@ const PORT = process.env.PORT || 3001;
 const httpRequestsTotal = new Counter(
   'http_requests_total',
   'Total number of HTTP requests',
-  ['method', 'route', 'status_code'],
+  ['method', 'route', 'status_code']
 );
 
 // Register the counter with the default registry

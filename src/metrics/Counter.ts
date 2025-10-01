@@ -35,7 +35,7 @@ export class Counter {
 
     if (labels.length !== this.labels.length) {
       throw new Error(
-        `Label count mismatch, expected ${this.labels.length} but got ${labels.length}`,
+        `Label count mismatch, expected ${this.labels.length} but got ${labels.length}`
       );
     }
 
@@ -62,7 +62,7 @@ export class Counter {
   getValue(labels: string[] = []): number {
     if (labels.length !== this.labels.length) {
       throw new Error(
-        `Label count mismatch, expected ${this.labels.length} but got ${labels.length}`,
+        `Label count mismatch, expected ${this.labels.length} but got ${labels.length}`
       );
     }
     const key = JSON.stringify(labels);

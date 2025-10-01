@@ -7,19 +7,14 @@ const PORT = process.env.PORT || 3002;
 // Create Gauge metrics
 const activeConnections = new Gauge(
   'active_connections',
-  'Number of active connections',
+  'Number of active connections'
 );
 
-const memoryUsage = new Gauge(
-  'memory_usage_bytes',
-  'Memory usage in bytes',
-  ['type'],
-);
+const memoryUsage = new Gauge('memory_usage_bytes', 'Memory usage in bytes', [
+  'type',
+]);
 
-const cpuUsage = new Gauge(
-  'cpu_usage_percent',
-  'CPU usage percentage',
-);
+const cpuUsage = new Gauge('cpu_usage_percent', 'CPU usage percentage');
 
 // Register the gauges
 register.register('active_connections', activeConnections);
